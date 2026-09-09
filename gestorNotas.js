@@ -28,4 +28,32 @@ export function guardarNotasArchivo(notas) {
   }
 }
 
-console.log('Notas cargadas inicialmente:', leerNotasArchivo());
+export function agregarNota(titulo, contenido) {
+  if (!titulo || !contenido) {
+    console.warn('[AVISO] Título y contenido son obligatorios para crear una nota.');
+    return false;
+  }
+
+  const notas = leerNotasArchivo();
+  const existe = notas.some((nota) => nota.titulo.toLowerCase() === titulo.trim().toLowerCase());
+
+  if (existe) {
+    console.warn(`[DUPLICADO] Ya existe una nota con el título "${titulo}". Usa otro título.`);
+    return false;
+  }
+
+  const nuevaNota = {
+    id: notas.length > 0 ? Math.max(...notas.map((n) => n.id || 0)) + 1 : 1,
+    titulo: titulo.trim(),
+    contenido: contenido.trim(),
+    fecha: new Date().toISOString()
+  };
+
+  notas.push(nuevaNota);
+  guardarNotasArchivo(notas);
+  console.log(`[OK] Nota agregada con éxito: "${titulo}"`);
+  return true;
+}
+
+agregarNota('Recordatorio Gym', 'Entrenar pierna a las 7:00 PM.');
+console.log('Notas tras agregar:', leerNotasArchivo());
