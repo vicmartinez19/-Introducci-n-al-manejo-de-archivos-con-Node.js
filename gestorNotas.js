@@ -94,5 +94,54 @@ export function eliminarNota(titulo) {
   return true;
 }
 
-eliminarNota('Recordatorio Gym');
-listarNotas();
+export function buscarNota(titulo) {
+  const notas = leerNotasArchivo();
+  const nota = notas.find((n) => n.titulo.toLowerCase() === titulo.trim().toLowerCase());
+
+  if (!nota) {
+    console.log(`[BUSQUEDA] No se encontró la nota con título "${titulo}".`);
+    return null;
+  }
+
+  console.log(`\n[DETALLE DE NOTA] "${nota.titulo}"`);
+  console.log(`Contenido: ${nota.contenido}`);
+  console.log(`Fecha: ${nota.fecha}\n`);
+  return nota;
+}
+
+// CLI y Modo Demostracion
+const args = process.argv.slice(2);
+const comando = args[0] ? args[0].toLowerCase() : 'demo';
+
+if (comando === 'agregar') {
+  agregarNota(args[1], args[2]);
+} else if (comando === 'listar') {
+  listarNotas();
+} else if (comando === 'eliminar') {
+  eliminarNota(args[1]);
+} else if (comando === 'buscar') {
+  buscarNota(args[1]);
+} else {
+  console.log('==============================================');
+  console.log('   GESTOR DE NOTAS PERSONALES - DEMOSTRACION  ');
+  console.log('==============================================\n');
+
+  console.log('--- 1. Listando notas iniciales ---');
+  listarNotas();
+
+  console.log('--- 2. Agregando nuevas notas ---');
+  agregarNota('Recordatorio Gym', 'Entrenar pierna y cardio a las 7:00 PM.');
+  agregarNota('Proyecto DevF', 'Subir los 6 commits de cada actividad a GitHub.');
+
+  console.log('\n--- 3. Listando notas actualizadas ---');
+  listarNotas();
+
+  console.log('--- 4. Buscando nota específica ---');
+  buscarNota('Recordatorio Gym');
+
+  console.log('--- 5. Eliminando una nota ---');
+  eliminarNota('Recordatorio Gym');
+
+  console.log('\n--- 6. Estado final del archivo de notas ---');
+  listarNotas();
+}
