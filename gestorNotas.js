@@ -55,5 +55,29 @@ export function agregarNota(titulo, contenido) {
   return true;
 }
 
-agregarNota('Recordatorio Gym', 'Entrenar pierna a las 7:00 PM.');
-console.log('Notas tras agregar:', leerNotasArchivo());
+export function listarNotas() {
+  const notas = leerNotasArchivo();
+
+  console.log('\n========================================');
+  console.log('         LISTADO DE NOTAS GUARDADAS     ');
+  console.log('========================================');
+
+  if (notas.length === 0) {
+    console.log('No hay notas guardadas actualmente.');
+    console.log('========================================\n');
+    return;
+  }
+
+  notas.forEach((nota, index) => {
+    console.log(`Nota #${index + 1} (ID: ${nota.id})`);
+    console.log(`  * Título   : ${nota.titulo}`);
+    console.log(`  * Contenido: ${nota.contenido}`);
+    console.log(`  * Fecha    : ${nota.fecha}`);
+    console.log('----------------------------------------');
+  });
+
+  console.log(`Total de notas registradas: ${notas.length}`);
+  console.log('========================================\n');
+}
+
+listarNotas();
