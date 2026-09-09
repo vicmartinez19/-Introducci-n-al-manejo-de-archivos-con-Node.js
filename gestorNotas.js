@@ -80,4 +80,19 @@ export function listarNotas() {
   console.log('========================================\n');
 }
 
+export function eliminarNota(titulo) {
+  const notas = leerNotasArchivo();
+  const notasRestantes = notas.filter((nota) => nota.titulo.toLowerCase() !== titulo.trim().toLowerCase());
+
+  if (notasRestantes.length === notas.length) {
+    console.warn(`[NO ENCONTRADO] No se encontró ninguna nota con el título "${titulo}".`);
+    return false;
+  }
+
+  guardarNotasArchivo(notasRestantes);
+  console.log(`[ELIMINADO] Nota con título "${titulo}" eliminada exitosamente.`);
+  return true;
+}
+
+eliminarNota('Recordatorio Gym');
 listarNotas();
